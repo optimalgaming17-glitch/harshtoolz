@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>PDF Split Tool | HarshToolz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+
+<style>
+body { font-family: Arial; background:#111; color:#fff; }
+.box {
+  max-width:500px;
+  margin:50px auto;
+  padding:20px;
+  background:#1e1e1e;
+  border-radius:10px;
+  text-align:center;
+}
+input, button {
+  width:100%;
+  margin:10px 0;
+  padding:12px;
+}
+button { background:#00ffcc; border:none; font-weight:bold; }
+button:disabled { background: gray; }
+small { color:#aaa; }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>PDF Split Tool</h1>
+  <p>Split PDF by page number</p>
+
+  <input type="file" id="pdfInput" accept="application/pdf">
+  <input type="number" id="pageNumber" placeholder="Split after page number (e.g. 2)" min="1">
+
+  <button onclick="splitPDF()">Split PDF</button>
+  <button id="downloadBtn" disabled>Download Split PDF</button>
+
+  <p id="status"></p>
+  <small>📱 iPhone users: PDF opens in new tab → Share → Save to Files</small>
+</div>
+
+<script>
+let splitBlob = null;
+
+async function splitPDF() {
+  const file = document.getElementById("pdfInput").files[0];
+  const pageNum = parseInt(document.getElementById("pageNumber").value);
+  const status = document.getElementById("status");
+
+  if (!file || !pageNum) {
+    status.innerText = "Select PDF & enter page number";
+    return;
+  }
+
+  const bytes = await file.arrayBuffer();
+  const pdf = await PDFLib.PDFDocument.load(bytes);
+  const totalPages = pdf.getPageCount();
+
+  if (pageNum >= totalPages) {
+    status.innerText = "Page number must be less than total pages";
+    return;
+  }
+
+  const newPdf = await PDFLib.PDFDocument.create();
+  const pages = await newPdf.copyPages(pdf, [...Array(pageNum).keys()]);
+  pages.forEach(p => newPdf.addPage(p));
+
+  const newBytes = await newPdf.save();
+  splitBlob = new Blob([newBytes], { type: "application/pdf" });
+
+  status.innerText = "PDF split successfully!";
+  document.getElementById("downloadBtn").disabled = false;
+}
+
+document.getElementById("downloadBtn").onclick = () => {
+  if (!splitBlob) return;
+  const url = URL.createObjectURL(splitBlob);
+  window.open(url, "_blank"); // iOS-safe
+};
+</script>
+
+</body>
+</html>
