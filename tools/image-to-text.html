@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Image to Text (OCR) – HarshToolz</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+input, button, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  font-size: 16px;
+}
+</style>
+</head>
+<body>
+
+<h1>Image to Text (OCR)</h1>
+<p>Upload an image and extract text instantly.</p>
+
+<input type="file" id="imageInput" accept="image/*">
+<button onclick="extractText()">Extract Text</button>
+
+<textarea id="result" placeholder="Extracted text will appear here..."></textarea>
+
+<button onclick="downloadText()">Download Text</button>
+
+<!-- OCR Library -->
+<script src="https://unpkg.com/tesseract.js@2.1.5/dist/tesseract.min.js"></script>
+
+<script>
+function extractText() {
+  const file = document.getElementById("imageInput").files[0];
+  if (!file) {
+    alert("Image upload kar bhai 😅");
+    return;
+  }
+
+  Tesseract.recognize(
+    file,
+    'eng'
+  ).then(({ data: { text } }) => {
+    document.getElementById("result").value = text;
+  });
+}
+
+function downloadText() {
+  const text = document.getElementById("result").value;
+  if (text.trim() === "") {
+    alert("Download ke liye text nahi hai 😅");
+    return;
+  }
+
+  const blob = new Blob([text], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "image-text.txt";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
