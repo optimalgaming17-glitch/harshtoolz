@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Paraphrasing Tool – HarshToolz</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+textarea {
+  width: 100%;
+  height: 160px;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Paraphrasing Tool</h1>
+<p>Paste text below and rewrite it instantly.</p>
+
+<textarea id="inputText" placeholder="Paste your text here..."></textarea>
+
+<button onclick="paraphrase()">Paraphrase</button>
+
+<h3>Output</h3>
+<textarea id="outputText" placeholder="Paraphrased text will appear here..."></textarea>
+
+<br>
+<button onclick="downloadText()">Download Result</button>
+
+<script>
+function paraphrase() {
+  let text = document.getElementById("inputText").value;
+
+  if (text.trim() === "") {
+    alert("Text daal bhai 😅");
+    return;
+  }
+
+  const words = {
+    "good": "excellent",
+    "bad": "poor",
+    "important": "significant",
+    "fast": "quick",
+    "big": "large",
+    "small": "tiny",
+    "help": "assist",
+    "make": "create",
+    "use": "utilize"
+  };
+
+  let output = text.split(" ").map(word => {
+    let clean = word.toLowerCase();
+    return words[clean] || word;
+  }).join(" ");
+
+  document.getElementById("outputText").value = output;
+}
+
+function downloadText() {
+  let text = document.getElementById("outputText").value;
+
+  if (text.trim() === "") {
+    alert("Download ke liye kuch hai hi nahi 😅");
+    return;
+  }
+
+  let blob = new Blob([text], { type: "text/plain" });
+  let url = URL.createObjectURL(blob);
+
+  let a = document.createElement("a");
+  a.href = url;
+  a.download = "paraphrased-text.txt";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
