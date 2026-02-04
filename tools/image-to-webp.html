@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image to WebP Converter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 90%;
+      max-width: 420px;
+      background: #000;
+      padding: 20px;
+      border-radius: 14px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 14px;
+      color: #ccc;
+    }
+    input {
+      width: 100%;
+      margin: 15px 0;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #00ffd5;
+      color: #000;
+      font-weight: bold;
+    }
+    button:disabled {
+      background: #555;
+      color: #aaa;
+      cursor: not-allowed;
+    }
+    img {
+      width: 100%;
+      margin-top: 15px;
+      border-radius: 8px;
+    }
+    .status {
+      margin-top: 10px;
+      color: #00ff99;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Image to WebP</h1>
+  <p>Convert JPG / PNG images to WebP format</p>
+
+  <input type="file" id="imageInput" accept="image/*">
+
+  <button id="convertBtn">Convert to WebP</button>
+  <button id="downloadBtn" disabled>Download WebP</button>
+
+  <div class="status" id="status"></div>
+  <img id="preview" style="display:none;">
+</div>
+
+<script>
+  const imageInput = document.getElementById("imageInput");
+  const convertBtn = document.getElementById("convertBtn");
+  const downloadBtn = document.getElementById("downloadBtn");
+  const preview = document.getElementById("preview");
+  const statusText = document.getElementById("status");
+
+  let webpBlob = null;
+
+  convertBtn.onclick = () => {
+    if (!imageInput.files.length) {
+      alert("Please select an image");
+      return;
+    }
+
+    const file = imageInput.files[0];
+    const img = new Image();
+    const reader = new FileReader();
+
+    statusText.textContent = "Converting image...";
+    downloadBtn.disabled = true;
+
+    reader.onload = e => img.src = e.target.result;
+    reader.readAsDataURL(file);
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      canvas.toBlob(blob => {
+        webpBlob = blob;
+        preview.src = URL.createObjectURL(blob);
+        preview.style.display = "block";
+        statusText.textContent = "Image converted successfully!";
+        downloadBtn.disabled = false;
+      }, "image/webp", 0.9);
+    };
+  };
+
+  downloadBtn.onclick = () => {
+    if (!webpBlob) return;
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(webpBlob);
+    link.download = "converted.webp";
+    link.click();
+  };
+</script>
+
+</body>
+</html>
