@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Image Resizer | HarshToolz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body { font-family: Arial; background:#111; color:#fff; }
+.box {
+  max-width:500px;
+  margin:40px auto;
+  padding:20px;
+  background:#1e1e1e;
+  border-radius:10px;
+  text-align:center;
+}
+input, button {
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+}
+button {
+  background:#00ffcc;
+  border:none;
+  font-weight:bold;
+}
+button:disabled { background:gray; }
+img {
+  max-width:100%;
+  margin-top:10px;
+}
+small { color:#aaa; }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>Image Resizer</h1>
+  <p>Resize images online</p>
+
+  <input type="file" id="imgInput" accept="image/*">
+  <input type="number" id="width" placeholder="Width (px)">
+  <input type="number" id="height" placeholder="Height (px)">
+
+  <button onclick="resizeImage()">Resize Image</button>
+  <button id="downloadBtn" disabled>Download Image</button>
+
+  <img id="preview">
+  <p id="status"></p>
+  <small>📱 iPhone: Open image → Share → Save</small>
+</div>
+
+<script>
+let resizedBlob = null;
+
+function resizeImage() {
+  const file = document.getElementById("imgInput").files[0];
+  const w = document.getElementById("width").value;
+  const h = document.getElementById("height").value;
+  const status = document.getElementById("status");
+
+  if (!file || !w || !h) {
+    status.innerText = "Select image and enter width & height";
+    return;
+  }
+
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, w, h);
+
+    canvas.toBlob(blob => {
+      resizedBlob = blob;
+      document.getElementById("preview").src = URL.createObjectURL(blob);
+      document.getElementById("downloadBtn").disabled = false;
+      status.innerText = "Image resized successfully!";
+    }, "image/jpeg", 0.9);
+  };
+
+  img.src = URL.createObjectURL(file);
+}
+
+document.getElementById("downloadBtn").onclick = () => {
+  if (!resizedBlob) return;
+  const url = URL.createObjectURL(resizedBlob);
+  window.open(url, "_blank");
+};
+</script>
+
+</body>
+</html>
