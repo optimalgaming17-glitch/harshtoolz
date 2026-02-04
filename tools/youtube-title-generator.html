@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Title Generator</title>
+  <meta name="description" content="Generate catchy YouTube video titles to increase views and CTR.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 95%;
+      max-width: 420px;
+      background: #000;
+      padding: 20px;
+      border-radius: 14px;
+      text-align: center;
+    }
+    h1 { margin-bottom: 6px; }
+    p { font-size: 14px; color: #ccc; }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #ff0000;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .output {
+      margin-top: 15px;
+      background: #111;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .download-btn {
+      background: #00ffd5;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>YouTube Title Generator</h1>
+  <p>Enter your video topic and generate catchy titles</p>
+
+  <input id="topic" placeholder="Enter video topic">
+
+  <button onclick="generateTitles()">Generate Titles</button>
+
+  <div class="output" id="output"></div>
+
+  <button class="download-btn" onclick="downloadTitles()">Download Titles</button>
+</div>
+
+<script>
+  function generateTitles() {
+    const topic = document.getElementById("topic").value.trim();
+    if (!topic) {
+      alert("Enter a topic first");
+      return;
+    }
+
+    const titles = [
+      `How to ${topic} (Step by Step)`,
+      `${topic} Explained in Simple Words`,
+      `Top 5 Mistakes in ${topic}`,
+      `${topic} – Complete Beginner Guide`,
+      `This is Why ${topic} is Important`
+    ];
+
+    document.getElementById("output").innerHTML =
+      titles.map(t => "• " + t).join("<br>");
+  }
+
+  function downloadTitles() {
+    const text = document.getElementById("output").innerText;
+    if (!text) {
+      alert("Generate titles first");
+      return;
+    }
+
+    const blob = new Blob([text], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "youtube-titles.txt";
+    link.click();
+  }
+</script>
+
+</body>
+</html>
