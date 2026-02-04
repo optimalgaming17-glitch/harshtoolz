@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>PDF Compress Tool | HarshToolz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+
+<style>
+body { font-family: Arial; background:#111; color:#fff; }
+.box {
+  max-width:500px;
+  margin:50px auto;
+  padding:20px;
+  background:#1e1e1e;
+  border-radius:10px;
+  text-align:center;
+}
+input, button, select {
+  width:100%;
+  margin:10px 0;
+  padding:12px;
+}
+button { background:#00ffcc; border:none; font-weight:bold; }
+button:disabled { background:gray; }
+small { color:#aaa; }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>PDF Compress Tool</h1>
+  <p>Reduce PDF file size online</p>
+
+  <input type="file" id="pdfInput" accept="application/pdf">
+
+  <select id="level">
+    <option value="low">Low Compression</option>
+    <option value="medium" selected>Medium Compression</option>
+    <option value="high">High Compression</option>
+  </select>
+
+  <button onclick="compressPDF()">Compress PDF</button>
+  <button id="downloadBtn" disabled>Download Compressed PDF</button>
+
+  <p id="status"></p>
+  <small>📱 iPhone: PDF opens → Share → Save to Files</small>
+</div>
+
+<script>
+let compressedBlob = null;
+
+async function compressPDF() {
+  const file = document.getElementById("pdfInput").files[0];
+  const level = document.getElementById("level").value;
+  const status = document.getElementById("status");
+
+  if (!file) {
+    status.innerText = "Please select a PDF file";
+    return;
+  }
+
+  status.innerText = "Compressing PDF...";
+
+  const bytes = await file.arrayBuffer();
+  const pdf = await PDFLib.PDFDocument.load(bytes);
+
+  // Re-save PDF (basic compression)
+  const saveOptions = {
+    useObjectStreams: true,
+    addDefaultPage: false
+  };
+
+  const newBytes = await pdf.save(saveOptions);
+  compressedBlob = new Blob([newBytes], { type: "application/pdf" });
+
+  status.innerText = "PDF compressed successfully!";
+  document.getElementById("downloadBtn").disabled = false;
+}
+
+document.getElementById("downloadBtn").onclick = () => {
+  if (!compressedBlob) return;
+  const url = URL.createObjectURL(compressedBlob);
+  window.open(url, "_blank");
+};
+</script>
+
+</body>
+</html>
