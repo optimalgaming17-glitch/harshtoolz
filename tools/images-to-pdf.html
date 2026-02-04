@@ -1,59 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Images to PDF – HarshToolz</title>
-<meta name="description" content="Convert images to PDF online for free. Combine multiple images into one PDF easily.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Images to PDF Converter – HarshToolz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body { font-family: Arial, sans-serif; padding: 20px; }
-input, button { margin: 10px 0; }
-</style>
+  <!-- jsPDF CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      padding: 20px;
+    }
+    .box {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    button {
+      padding: 10px 20px;
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #333;
+    }
+    a {
+      display: inline-block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #0066cc;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
 
-<h1>Images to PDF</h1>
-<p>Select one or more images and convert them into a single PDF file.</p>
+  <!-- HEADER -->
+  <header style="padding:15px;background:#111;color:#fff;text-align:center;">
+    <h2>HarshToolz</h2>
+    <p>Free Online Tools – Images, PDF, Text & More</p>
+  </header>
 
-<input type="file" id="images" accept="image/*" multiple>
-<br>
-<button onclick="createPDF()">Convert to PDF</button>
+  <br>
 
-<br><br>
-<a href="../index.html">← Back to Home</a>
+  <!-- MAIN TOOL -->
+  <div class="box">
+    <h3>Images to PDF Converter</h3>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <input type="file" id="images" accept="image/*" multiple>
+    <br><br>
 
-<script>
-async function createPDF() {
-  const files = document.getElementById("images").files;
-  if (files.length === 0) {
-    alert("Please select images");
-    return;
-  }
+    <button onclick="createPDF()">Convert to PDF</button>
 
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF();
+    <!-- OUTPUT AREA -->
+    <p id="output"></p>
+  </div>
 
-  for (let i = 0; i < files.length; i++) {
-    const imgData = await readFile(files[i]);
-    if (i > 0) pdf.addPage();
-    pdf.addImage(imgData, "JPEG", 10, 10, 190, 270);
-  }
+  <!-- FOOTER -->
+  <footer style="margin-top:40px;padding:15px;background:#f2f2f2;text-align:center;">
+    <p>© 2026 HarshToolz • All rights reserved</p>
+    <a href="../privacy.html">Privacy Policy</a> |
+    <a href="../about.html">About</a> |
+    <a href="../contact.html">Contact</a>
+  </footer>
 
-  pdf.save("images-to-pdf.pdf");
-}
+  <!-- SCRIPT -->
+  <script>
+    async function createPDF() {
+      const files = document.getElementById("images").files;
+      if (files.length === 0) {
+        alert("Please select images");
+        return;
+      }
 
-function readFile(file) {
-  return new Promise(resolve => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.readAsDataURL(file);
-  });
-}
-</script>
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF();
+
+      for (let i = 0; i < files.length; i++) {
+        const imgData = await readFile(files[i]);
+        if (i > 0) pdf.addPage();
+        pdf.addImage(imgData, "JPEG", 10, 10, 190, 270);
+      }
+
+      const pdfBlob = pdf.output("blob");
+      const url = URL.createObjectURL(pdfBlob);
+
+      document.getElementById("output").innerHTML = `
+        <br>
+        <b>PDF Ready ✅</b><br>
+        <a href="${url}" download="images-to-pdf.pdf">⬇ Download PDF</a>
+      `;
+    }
+
+    function readFile(file) {
+      return new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    }
+  </script>
 
 </body>
 </html>
