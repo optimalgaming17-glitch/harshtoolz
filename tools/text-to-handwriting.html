@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Text to Handwriting Generator – HarshToolz</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+textarea, select, button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+canvas {
+  width: 100%;
+  border: 1px solid #ccc;
+  margin-top: 15px;
+  background: #fffdf7;
+}
+</style>
+</head>
+<body>
+
+<h1>Text to Handwriting Generator</h1>
+<p>Convert your text into realistic handwriting and download it as an image.</p>
+
+<textarea id="textInput" rows="6" placeholder="Type or paste your text here..."></textarea>
+
+<select id="fontSize">
+  <option value="28">Small Handwriting</option>
+  <option value="32" selected>Normal Handwriting</option>
+  <option value="38">Large Handwriting</option>
+</select>
+
+<button onclick="generateHandwriting()">Generate Handwriting</button>
+
+<canvas id="canvas" height="1000"></canvas>
+
+<button onclick="downloadImage()">Download Handwritten Image</button>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function generateHandwriting() {
+  const text = document.getElementById("textInput").value;
+  const fontSize = document.getElementById("fontSize").value;
+
+  if (text.trim() === "") {
+    alert("Text likh bhai 😅");
+    return;
+  }
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  canvas.width = 800;
+  ctx.fillStyle = "#000";
+  ctx.font = fontSize + "px cursive";
+
+  let x = 40;
+  let y = 60;
+  let lineHeight = parseInt(fontSize) + 14;
+
+  const words = text.split(" ");
+
+  for (let i = 0; i < words.length; i++) {
+    let word = words[i] + " ";
+    let width = ctx.measureText(word).width;
+
+    if (x + width > canvas.width - 40) {
+      x = 40;
+      y += lineHeight;
+    }
+
+    ctx.fillText(word, x, y);
+    x += width;
+  }
+}
+
+function downloadImage() {
+  const link = document.createElement("a");
+  link.download = "handwritten-text.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
+</script>
+
+</body>
+</html>
