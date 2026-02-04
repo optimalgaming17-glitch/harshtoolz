@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Word Counter – HarshToolz</title>
+</head>
+<body>
+
+<h2>Word Counter</h2>
+<textarea id="text" rows="10" cols="40" placeholder="Type text here..."></textarea>
+<br><br>
+<button onclick="count()">Count</button>
+<p id="result"></p>
+
+<script>
+function count(){
+  const txt=document.getElementById("text").value.trim();
+  const words=txt ? txt.split(/\s+/).length : 0;
+  const chars=txt.length;
+  document.getElementById("result").innerText=
+  "Words: "+words+" | Characters: "+chars;
+}
+</script>
+
+</body>
+</html>
