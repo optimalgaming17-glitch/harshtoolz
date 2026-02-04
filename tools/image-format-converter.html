@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Format Converter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 90%;
+      max-width: 420px;
+      background: #000;
+      padding: 20px;
+      border-radius: 14px;
+      text-align: center;
+    }
+    h1 { margin-bottom: 10px; }
+    p { font-size: 14px; color: #ccc; }
+
+    input, select {
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #00ffd5;
+      color: #000;
+      font-weight: bold;
+    }
+
+    button:disabled {
+      background: #555;
+      color: #aaa;
+      cursor: not-allowed;
+    }
+
+    img {
+      width: 100%;
+      margin-top: 15px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .status {
+      margin-top: 10px;
+      color: #00ff99;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Image Format Converter</h1>
+  <p>Convert images to JPG, PNG or WebP</p>
+
+  <input type="file" id="imageInput" accept="image/*">
+
+  <select id="formatSelect">
+    <option value="image/jpeg">Convert to JPG</option>
+    <option value="image/png">Convert to PNG</option>
+    <option value="image/webp">Convert to WebP</option>
+  </select>
+
+  <button id="convertBtn">Convert Image</button>
+  <button id="downloadBtn" disabled>Download Image</button>
+
+  <div class="status" id="status"></div>
+  <img id="preview">
+</div>
+
+<script>
+  const imageInput = document.getElementById("imageInput");
+  const formatSelect = document.getElementById("formatSelect");
+  const convertBtn = document.getElementById("convertBtn");
+  const downloadBtn = document.getElementById("downloadBtn");
+  const preview = document.getElementById("preview");
+  const statusText = document.getElementById("status");
+
+  let convertedBlob = null;
+  let outputExt = "jpg";
+
+  convertBtn.onclick = () => {
+    if (!imageInput.files.length) {
+      alert("Please select an image");
+      return;
+    }
+
+    const file = imageInput.files[0];
+    const img = new Image();
+    const reader = new FileReader();
+
+    statusText.textContent = "Converting image...";
+    downloadBtn.disabled = true;
+
+    reader.onload = e => img.src = e.target.result;
+    reader.readAsDataURL(file);
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      const format = formatSelect.value;
+      outputExt = format.split("/")[1];
+
+      canvas.toBlob(blob => {
+        convertedBlob = blob;
+        preview.src = URL.createObjectURL(blob);
+        preview.style.display = "block";
+        statusText.textContent = "Image converted successfully!";
+        downloadBtn.disabled = false;
+      }, format, 0.95);
+    };
+  };
+
+  downloadBtn.onclick = () => {
+    if (!convertedBlob) return;
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(convertedBlob);
+    link.download = `converted-image.${outputExt}`;
+    link.click();
+  };
+</script>
+
+</body>
+</html>
