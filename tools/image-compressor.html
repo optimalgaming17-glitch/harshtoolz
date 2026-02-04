@@ -1,32 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <title>Image Compressor – HarshToolz</title>
+<meta name="description" content="Compress images online for free. Reduce image size without losing quality.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body { font-family: Arial, sans-serif; padding: 20px; }
+input, button { margin: 10px 0; }
+img { max-width: 100%; margin-top: 10px; }
+</style>
 </head>
+
 <body>
 
-<h2>Image Compressor</h2>
-<input type="file" id="imgInput" accept="image/*">
-<br><br>
-<button onclick="compress()">Compress Image</button>
-<br><br>
-<img id="preview" style="max-width:100%;">
+<h1>Image Compressor</h1>
+<p>Upload an image and compress it instantly.</p>
+
+<input type="file" id="upload" accept="image/*">
+<br>
+<label>Quality (0.1 to 1):</label>
+<input type="number" id="quality" value="0.6" step="0.1" min="0.1" max="1">
+<br>
+<button onclick="compressImage()">Compress</button>
+
+<div id="output"></div>
+
+<br>
+<a href="../index.html">← Back to Home</a>
 
 <script>
-function compress(){
-  const file=document.getElementById("imgInput").files[0];
-  if(!file) return alert("Select image");
+function compressImage() {
+  const file = document.getElementById("upload").files[0];
+  const quality = document.getElementById("quality").value;
 
-  const img=new Image();
-  img.onload=function(){
-    const canvas=document.createElement("canvas");
-    canvas.width=img.width*0.6;
-    canvas.height=img.height*0.6;
-    const ctx=canvas.getContext("2d");
-    ctx.drawImage(img,0,0,canvas.width,canvas.height);
-    document.getElementById("preview").src=canvas.toDataURL("image/jpeg",0.6);
+  if (!file) {
+    alert("Please upload an image");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+
+  reader.onload = function (event) {
+    const img = new Image();
+    img.src = event.target.result;
+
+    img.onload = function () {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+
+      const compressed = canvas.toDataURL("image/jpeg", quality);
+
+      document.getElementById("output").innerHTML = `
+        <h3>Compressed Image</h3>
+        <img src="${compressed}">
+        <br><br>
+        <a href="${compressed}" download="compressed.jpg">Download Image</a>
+      `;
+    };
   };
-  img.src=URL.createObjectURL(file);
 }
 </script>
 
