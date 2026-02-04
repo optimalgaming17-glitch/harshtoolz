@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Images to PDF – HarshToolz</title>
-<meta name="description" content="Convert multiple images to PDF online for free. No upload, works in browser.">
+<meta name="description" content="Convert images to PDF online for free. Combine multiple images into one PDF easily.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -15,22 +15,19 @@ input, button { margin: 10px 0; }
 <body>
 
 <h1>Images to PDF</h1>
-<p>Select multiple images and convert them into a single PDF.</p>
+<p>Select one or more images and convert them into a single PDF file.</p>
 
 <input type="file" id="images" accept="image/*" multiple>
 <br>
-<button onclick="generatePDF()">Convert to PDF</button>
+<button onclick="createPDF()">Convert to PDF</button>
 
-<p id="status"></p>
-
-<br>
+<br><br>
 <a href="../index.html">← Back to Home</a>
 
-<!-- jsPDF CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
-async function generatePDF() {
+async function createPDF() {
   const files = document.getElementById("images").files;
   if (files.length === 0) {
     alert("Please select images");
@@ -41,7 +38,7 @@ async function generatePDF() {
   const pdf = new jsPDF();
 
   for (let i = 0; i < files.length; i++) {
-    const imgData = await toDataURL(files[i]);
+    const imgData = await readFile(files[i]);
     if (i > 0) pdf.addPage();
     pdf.addImage(imgData, "JPEG", 10, 10, 190, 270);
   }
@@ -49,7 +46,7 @@ async function generatePDF() {
   pdf.save("images-to-pdf.pdf");
 }
 
-function toDataURL(file) {
+function readFile(file) {
   return new Promise(resolve => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result);
