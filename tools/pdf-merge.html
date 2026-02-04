@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PDF Merge Tool Online Free | HarshToolz</title>
+<meta name="description" content="Merge multiple PDF files into one PDF and download instantly. Free PDF merger tool by HarshToolz.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="../style.css">
+
+<!-- PDF-LIB -->
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+
+<style>
+.tool-box {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  background: #111;
+  color: #fff;
+  border-radius: 10px;
+  text-align: center;
+}
+input, button {
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+}
+button {
+  background: #00ffcc;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+button:disabled {
+  background: gray;
+}
+</style>
+</head>
+
+<body>
+
+<div class="tool-box">
+  <h1>PDF Merge Tool</h1>
+  <p>Select multiple PDF files and merge them into one.</p>
+
+  <!-- PDF SELECT -->
+  <input type="file" id="pdfInput" accept="application/pdf" multiple>
+
+  <!-- MERGE BUTTON -->
+  <button onclick="mergePDFs()">Merge PDFs</button>
+
+  <!-- DOWNLOAD BUTTON -->
+  <button id="downloadBtn" disabled>Download Merged PDF</button>
+
+  <p id="status"></p>
+</div>
+
+<script>
+let mergedPdfBlob = null;
+
+async function mergePDFs() {
+  const files = document.getElementById("pdfInput").files;
+  const status = document.getElementById("status");
+  const downloadBtn = document.getElementById("downloadBtn");
+
+  if (files.length < 2) {
+    status.innerText = "Please select at least 2 PDF files.";
+    return;
+  }
+
+  status.innerText = "Merging PDFs...";
+  downloadBtn.disabled = true;
+
+  const mergedPdf = await PDFLib.PDFDocument.create();
+
+  for (let file of files) {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+    const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+    pages.forEach(page => mergedPdf.addPage(page));
+  }
+
+  const mergedPdfBytes = await mergedPdf.save();
+  mergedPdfBlob = new Blob([mergedPdfBytes], { type: "application/pdf" });
+
+  status.innerText = "PDF merged successfully!";
+  downloadBtn.disabled = false;
+}
+
+// DOWNLOAD FUNCTION
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  if (!mergedPdfBlob) return;
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(mergedPdfBlob);
+  link.download = "merged-harshtoolz.pdf";
+  link.click();
+});
+</script>
+
+</body>
+</html>
