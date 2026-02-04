@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Instagram Caption Generator</title>
+  <meta name="description" content="Generate engaging Instagram captions for posts and reels.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 95%;
+      max-width: 420px;
+      background: #000;
+      padding: 20px;
+      border-radius: 14px;
+      text-align: center;
+    }
+    h1 { margin-bottom: 6px; }
+    p { font-size: 14px; color: #ccc; }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af);
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .output {
+      margin-top: 15px;
+      background: #111;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: left;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    .download-btn {
+      background: #00ffd5;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Instagram Caption Generator</h1>
+  <p>Create captions for Instagram posts & reels</p>
+
+  <input id="topic" placeholder="Post topic (e.g. travel, fitness)">
+  <select id="mood">
+    <option value="Cool">Cool</option>
+    <option value="Funny">Funny</option>
+    <option value="Motivational">Motivational</option>
+    <option value="Emotional">Emotional</option>
+  </select>
+
+  <button onclick="generateCaption()">Generate Caption</button>
+
+  <div class="output" id="output"></div>
+
+  <button class="download-btn" onclick="downloadCaption()">Download Caption</button>
+</div>
+
+<script>
+  function generateCaption() {
+    const topic = document.getElementById("topic").value.trim();
+    const mood = document.getElementById("mood").value;
+
+    if (!topic) {
+      alert("Enter a topic");
+      return;
+    }
+
+    let caption = "";
+
+    if (mood === "Cool") {
+      caption = `${topic} vibes only 😎🔥`;
+    } else if (mood === "Funny") {
+      caption = `Doing ${topic} like a pro 😂`;
+    } else if (mood === "Motivational") {
+      caption = `Stay consistent with ${topic} 💪✨`;
+    } else {
+      caption = `${topic} — moments that stay forever ❤️`;
+    }
+
+    document.getElementById("output").textContent = caption;
+  }
+
+  function downloadCaption() {
+    const text = document.getElementById("output").textContent;
+    if (!text) {
+      alert("Generate caption first");
+      return;
+    }
+
+    const blob = new Blob([text], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "instagram-caption.txt";
+    link.click();
+  }
+</script>
+
+</body>
+</html>
