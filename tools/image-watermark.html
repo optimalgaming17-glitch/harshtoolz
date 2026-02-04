@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Image Watermark Tool – HarshToolz</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+input, button {
+  padding: 10px;
+  margin: 8px 0;
+  width: 100%;
+}
+canvas {
+  max-width: 100%;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+}
+</style>
+</head>
+<body>
+
+<h1>Image Watermark Tool</h1>
+<p>Add text watermark to your image instantly.</p>
+
+<input type="file" id="imageInput" accept="image/*">
+<input type="text" id="watermarkText" placeholder="Enter watermark text">
+<button onclick="addWatermark()">Add Watermark</button>
+
+<canvas id="canvas"></canvas>
+
+<br>
+<button onclick="downloadImage()">Download Image</button>
+
+<script>
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
+let img = new Image();
+
+document.getElementById("imageInput").addEventListener("change", function(e) {
+  let file = e.target.files[0];
+  let reader = new FileReader();
+
+  reader.onload = function(event) {
+    img.src = event.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+img.onload = function() {
+  canvas.width = img.width;
+  canvas.height = img.height;
+  ctx.drawImage(img, 0, 0);
+};
+
+function addWatermark() {
+  let text = document.getElementById("watermarkText").value;
+  if (text.trim() === "") {
+    alert("Watermark text daal bhai 😅");
+    return;
+  }
+
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+  ctx.textAlign = "right";
+  ctx.fillText(text, canvas.width - 20, canvas.height - 20);
+}
+
+function downloadImage() {
+  let link = document.createElement("a");
+  link.download = "watermarked-image.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
+</script>
+
+</body>
+</html>
