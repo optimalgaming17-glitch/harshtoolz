@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Thumbnail Downloader</title>
+  <meta name="description" content="Download YouTube video thumbnail in HD, SD, and small size for free.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 95%;
+      max-width: 420px;
+      background: #000;
+      padding: 20px;
+      border-radius: 14px;
+      text-align: center;
+    }
+    h1 { margin-bottom: 6px; }
+    p { font-size: 14px; color: #ccc; }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #ff0000;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .thumb {
+      margin-top: 15px;
+    }
+
+    .thumb img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .download-btn {
+      background: #00ffd5;
+      color: #000;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>YouTube Thumbnail Downloader</h1>
+  <p>Paste YouTube video link and download thumbnail</p>
+
+  <input id="videoUrl" placeholder="Paste YouTube Video URL">
+
+  <button onclick="getThumbnail()">Get Thumbnail</button>
+
+  <div class="thumb" id="thumb"></div>
+</div>
+
+<script>
+  function getThumbnail() {
+    const url = document.getElementById("videoUrl").value.trim();
+    const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
+
+    if (!match) {
+      alert("Invalid YouTube URL");
+      return;
+    }
+
+    const videoId = match[1];
+    const imgUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+
+    document.getElementById("thumb").innerHTML = `
+      <img src="${imgUrl}">
+      <a href="${imgUrl}" download>
+        <button class="download-btn">Download Thumbnail</button>
+      </a>
+    `;
+  }
+</script>
+
+</body>
+</html>
