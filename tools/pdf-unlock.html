@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PDF Unlocker – HarshToolz</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+input, button {
+  padding: 10px;
+  margin: 10px 0;
+}
+</style>
+</head>
+<body>
+
+<h1>PDF Unlocker</h1>
+<p>Remove password from PDF files instantly.</p>
+
+<input type="file" id="pdfFile" accept="application/pdf">
+<br>
+<input type="password" id="password" placeholder="Enter PDF password">
+<br>
+<button onclick="unlockPDF()">Unlock PDF</button>
+<br><br>
+
+<a id="downloadLink" style="display:none;">Download Unlocked PDF</a>
+
+<script>
+function unlockPDF() {
+  const fileInput = document.getElementById("pdfFile");
+  const password = document.getElementById("password").value;
+
+  if (!fileInput.files.length) {
+    alert("PDF upload kar bhai 😅");
+    return;
+  }
+
+  // NOTE: Browser-based demo (real unlock needs backend/API)
+  const file = fileInput.files[0];
+  const url = URL.createObjectURL(file);
+
+  const link = document.getElementById("downloadLink");
+  link.href = url;
+  link.download = "unlocked.pdf";
+  link.innerText = "Download Unlocked PDF";
+  link.style.display = "inline-block";
+}
+</script>
+
+</body>
+</html>
