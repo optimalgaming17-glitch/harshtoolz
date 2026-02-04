@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Tag Generator</title>
+  <meta name="description" content="Generate SEO optimized YouTube tags to improve video ranking.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 95%;
+      max-width: 420px;
+      background: #000;
+      padding: 20px;
+      border-radius: 14px;
+      text-align: center;
+    }
+    h1 { margin-bottom: 6px; }
+    p { font-size: 14px; color: #ccc; }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    textarea {
+      height: 110px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #ff0000;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .output {
+      margin-top: 15px;
+      background: #111;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: left;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    .download-btn {
+      background: #00ffd5;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>YouTube Tag Generator</h1>
+  <p>Generate SEO friendly tags for your YouTube videos</p>
+
+  <input id="topic" placeholder="Enter video topic">
+  <textarea id="keywords" placeholder="Extra keywords (optional)"></textarea>
+
+  <button onclick="generateTags()">Generate Tags</button>
+
+  <div class="output" id="output"></div>
+
+  <button class="download-btn" onclick="downloadTags()">Download Tags</button>
+</div>
+
+<script>
+  function generateTags() {
+    const topic = document.getElementById("topic").value.trim();
+    const extra = document.getElementById("keywords").value.trim();
+
+    if (!topic) {
+      alert("Enter a topic");
+      return;
+    }
+
+    let tags = [
+      topic,
+      topic + " tutorial",
+      topic + " tips",
+      topic + " guide",
+      topic + " for beginners",
+      "how to " + topic,
+      topic + " explained"
+    ];
+
+    if (extra) {
+      tags = tags.concat(extra.split(",").map(t => t.trim()));
+    }
+
+    document.getElementById("output").textContent =
+      tags.join(", ");
+  }
+
+  function downloadTags() {
+    const text = document.getElementById("output").textContent;
+    if (!text) {
+      alert("Generate tags first");
+      return;
+    }
+
+    const blob = new Blob([text], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "youtube-tags.txt";
+    link.click();
+  }
+</script>
+
+</body>
+</html>
