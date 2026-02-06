@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Time Zone Converter – Convert Time Between Countries | HarshToolz</title>
+
+<meta name="description" content="Free online time zone converter to convert time between IST, PST, EST, GMT and more. Fast, accurate and easy to use.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f9f9f9;
+}
+h1 {
+  color: #222;
+}
+p {
+  line-height: 1.6;
+}
+select, input, button {
+  padding: 10px;
+  margin: 8px 0;
+  width: 100%;
+}
+button {
+  background: #000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  opacity: 0.85;
+}
+.result {
+  margin-top: 15px;
+  font-weight: bold;
+}
+.download-btn {
+  margin-top: 20px;
+  background: #0a7cff;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Online Time Zone Converter</h1>
+
+<p>
+This free online time zone converter helps you convert time between different countries easily.
+It is perfect for freelancers, remote workers, students, and businesses working across multiple
+time zones. Convert IST, PST, EST, GMT and more instantly without confusion.
+</p>
+
+<p>
+Just select your source time zone, enter time, and choose the target time zone.
+The tool works instantly in your browser without login or installation.
+Your data is completely safe and never stored.
+</p>
+
+<label>Enter Time:</label>
+<input type="time" id="timeInput">
+
+<label>From Time Zone:</label>
+<select id="fromTZ">
+  <option value="5.5">IST</option>
+  <option value="0">GMT</option>
+  <option value="-5">EST</option>
+  <option value="-8">PST</option>
+</select>
+
+<label>To Time Zone:</label>
+<select id="toTZ">
+  <option value="0">GMT</option>
+  <option value="5.5">IST</option>
+  <option value="-5">EST</option>
+  <option value="-8">PST</option>
+</select>
+
+<button onclick="convertTime()">Convert Time</button>
+
+<div class="result" id="result"></div>
+
+<!-- COMPULSARY DOWNLOAD BUTTON -->
+<button class="download-btn" onclick="downloadResult()">Download Result</button>
+
+<script>
+function convertTime() {
+  const time = document.getElementById("timeInput").value;
+  if (!time) {
+    alert("Enter time first");
+    return;
+  }
+
+  const from = parseFloat(document.getElementById("fromTZ").value);
+  const to = parseFloat(document.getElementById("toTZ").value);
+
+  let [h, m] = time.split(":").map(Number);
+  let total = h + m / 60;
+  let converted = total - from + to;
+
+  if (converted < 0) converted += 24;
+  if (converted >= 24) converted -= 24;
+
+  let ch = Math.floor(converted);
+  let cm = Math.round((converted - ch) * 60);
+
+  document.getElementById("result").innerText =
+    "Converted Time: " + ch.toString().padStart(2,"0") + ":" + cm.toString().padStart(2,"0");
+}
+
+function downloadResult() {
+  const text = document.getElementById("result").innerText;
+  if (!text) {
+    alert("Convert time first");
+    return;
+  }
+  const blob = new Blob([text], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "time-zone-result.txt";
+  a.click();
+}
+</script>
+
+</body>
+</html>
