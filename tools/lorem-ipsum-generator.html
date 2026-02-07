@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Lorem Ipsum Generator – HarshToolz</title>
+<meta name="description" content="Generate Lorem Ipsum dummy text online.">
+</head>
+<body>
+
+<h1>Lorem Ipsum Generator</h1>
+
+<textarea id="txt" style="width:100%;height:160px;"></textarea>
+<br><br>
+<button onclick="gen()">Generate</button>
+<button onclick="down()">Download</button>
+
+<p>
+Lorem Ipsum dummy text for designers, developers and layout testing.
+</p>
+
+<script>
+function gen(){
+txt.value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+}
+function down(){
+const b=new Blob([txt.value],{type:"text/plain"});
+const a=document.createElement("a");
+a.href=URL.createObjectURL(b);
+a.download="lorem-ipsum.txt";
+a.click();
+}
+</script>
+
+</body>
+</html>
