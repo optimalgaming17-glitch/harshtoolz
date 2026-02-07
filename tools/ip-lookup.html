@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>IP Address Lookup - HarshToolz</title>
+<meta name="description" content="Find IP address details like country, city, ISP and location online.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{margin:0;font-family:Arial;background:#0f0f0f;color:#fff;}
+.tool-box{max-width:420px;margin:40px auto;background:#111;padding:30px;border-radius:14px;
+box-shadow:0 0 25px rgba(0,255,200,.15);text-align:center;}
+h1{font-size:26px}
+p{color:#ccc;font-size:14px}
+input{width:100%;padding:14px;margin-top:15px;border:none;border-radius:10px;font-size:16px;}
+button{width:100%;padding:14px;margin-top:15px;border:none;border-radius:10px;
+background:#00ffd5;color:#000;font-size:16px;font-weight:bold;cursor:pointer;}
+.result{margin-top:15px;font-size:14px;text-align:left;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="tool-box">
+<h1>IP Address Lookup</h1>
+<p>Find location & ISP details of any IP address.</p>
+
+<input type="text" id="ip" placeholder="Enter IP address">
+<button onclick="lookup()">Lookup IP</button>
+
+<div class="result" id="out"></div>
+</div>
+
+<script>
+function lookup(){
+let ip=document.getElementById("ip").value || "";
+fetch("https://ipapi.co/"+ip+"/json/")
+.then(res=>res.json())
+.then(d=>{
+out.innerHTML=
+"IP: "+d.ip+"<br>"+
+"Country: "+d.country_name+"<br>"+
+"City: "+d.city+"<br>"+
+"Region: "+d.region+"<br>"+
+"ISP: "+d.org;
+})
+.catch(()=>out.innerText="Invalid IP or network error");
+}
+</script>
+</body>
+</html>
