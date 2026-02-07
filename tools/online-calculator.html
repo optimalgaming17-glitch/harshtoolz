@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Online Calculator – HarshToolz</title>
+<meta name="description" content="Free online calculator for quick calculations.">
+</head>
+<body>
+
+<h1>Online Calculator</h1>
+
+<input id="calc" placeholder="Example: 10+20" style="width:100%;padding:10px;">
+<br><br>
+<button onclick="run()">Calculate</button>
+<button onclick="down()">Download Result</button>
+
+<p id="res"></p>
+
+<p>
+Perform quick math calculations online without installing anything.
+</p>
+
+<script>
+function run(){
+res.innerText="Result: "+eval(calc.value);
+}
+function down(){
+const b=new Blob([res.innerText],{type:"text/plain"});
+const a=document.createElement("a");
+a.href=URL.createObjectURL(b);
+a.download="calculation.txt";
+a.click();
+}
+</script>
+
+</body>
+</html>
