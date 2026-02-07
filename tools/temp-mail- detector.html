@@ -1,57 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Temp Mail Detector - HarshToolz</title>
-<meta name="description" content="Detect temporary or disposable email addresses online.">
+<title>Temp Email Detector</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{margin:0;font-family:Arial;background:#0f0f0f;color:#fff;}
-.tool-box{max-width:420px;margin:40px auto;background:#111;padding:30px;border-radius:14px;
-box-shadow:0 0 25px rgba(0,255,200,.15);text-align:center;}
-h1{font-size:26px}
-p{color:#ccc;font-size:14px}
-input{width:100%;padding:14px;margin-top:15px;border:none;border-radius:10px;font-size:16px;}
-button{width:100%;padding:14px;margin-top:15px;border:none;border-radius:10px;
-background:#00ffd5;color:#000;font-size:16px;font-weight:bold;cursor:pointer;}
-.result{margin-top:15px;font-size:18px;font-weight:bold}
+body{background:#111;color:#fff;font-family:Arial;padding:20px}
+.box{max-width:400px;margin:auto;background:#000;padding:25px;border-radius:12px}
+input,button{width:100%;padding:12px;margin-top:10px;border-radius:8px;border:none}
+button{background:#6ef3c5;font-weight:bold}
+#res{margin-top:15px;text-align:center}
 </style>
 </head>
-
 <body>
-<div class="tool-box">
-<h1>Temp Mail Detector</h1>
-<p>Check if email is temporary or disposable.</p>
 
-<input type="text" id="email" placeholder="Enter email address">
-<button onclick="check()">Check Email</button>
-
-<div class="result" id="out"></div>
+<div class="box">
+<h2>Temp Email Detector</h2>
+<input id="email" placeholder="Enter email">
+<button onclick="check()">Check</button>
+<div id="res"></div>
 </div>
 
 <script>
-const tempDomains=[
-"tempmail.com","10minutemail.com","guerrillamail.com",
-"mailinator.com","yopmail.com","throwawaymail.com"
-];
-
 function check(){
-let e=email.value.toLowerCase();
-if(!e.includes("@")){
-out.innerText="Invalid Email ❌";
-out.style.color="#ff5252";
-return;
-}
-
-let domain=e.split("@")[1];
-if(tempDomains.includes(domain)){
-out.innerText="Temporary Email Detected ⚠️";
-out.style.color="#ff5252";
-}else{
-out.innerText="Not a Temp Email ✅";
-out.style.color="#00ffd5";
-}
+  let e=document.getElementById("email").value.toLowerCase();
+  let temp=["tempmail","10min","mailinator","guerrilla"];
+  let r="Valid Email ✅";
+  temp.forEach(t=>{ if(e.includes(t)) r="Temporary Email ❌"; });
+  document.getElementById("res").innerText=r;
 }
 </script>
+
 </body>
 </html>
