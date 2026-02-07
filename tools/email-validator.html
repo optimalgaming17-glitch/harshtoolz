@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Email Validator - HarshToolz</title>
+<meta name="description" content="Validate email address format instantly online.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{margin:0;font-family:Arial;background:#0f0f0f;color:#fff;}
+.tool-box{max-width:420px;margin:40px auto;background:#111;padding:30px;border-radius:14px;
+box-shadow:0 0 25px rgba(0,255,200,.15);text-align:center;}
+h1{font-size:26px}
+p{color:#ccc;font-size:14px}
+input{width:100%;padding:14px;margin-top:15px;border:none;border-radius:10px;font-size:16px;}
+button{width:100%;padding:14px;margin-top:15px;border:none;border-radius:10px;
+background:#00ffd5;color:#000;font-size:16px;font-weight:bold;cursor:pointer;}
+.result{margin-top:15px;font-size:18px;font-weight:bold}
+</style>
+</head>
+
+<body>
+<div class="tool-box">
+<h1>Email Validator</h1>
+<p>Check if an email address is valid or not.</p>
+
+<input type="text" id="email" placeholder="Enter email address">
+<button onclick="validate()">Validate Email</button>
+
+<div class="result" id="out"></div>
+</div>
+
+<script>
+function validate(){
+let e=email.value.trim();
+let regex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+let typos=["gmial.com","gmal.com","hotnail.com","yaho.com"];
+
+if(!regex.test(e)){
+out.innerText="Invalid Email ❌";
+out.style.color="#ff5252";
+return;
+}
+
+for(let t of typos){
+if(e.endsWith(t)){
+out.innerText="Valid but looks suspicious ⚠️";
+out.style.color="#ffb300";
+return;
+}
+}
+
+out.innerText="Valid Email ✅";
+out.style.color="#00ffd5";
+}
+</script>
+</body>
+</html>
