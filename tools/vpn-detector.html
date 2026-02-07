@@ -1,45 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>VPN Detector - HarshToolz</title>
-<meta name="description" content="Detect if an IP address is using VPN or proxy online.">
+<title>VPN / Proxy Detector</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{margin:0;font-family:Arial;background:#0f0f0f;color:#fff;}
-.tool-box{max-width:420px;margin:40px auto;background:#111;padding:30px;border-radius:14px;
-box-shadow:0 0 25px rgba(0,255,200,.15);text-align:center;}
-h1{font-size:26px}
-p{color:#ccc;font-size:14px}
-button{width:100%;padding:14px;margin-top:15px;border:none;border-radius:10px;
-background:#00ffd5;color:#000;font-size:16px;font-weight:bold;cursor:pointer;}
-.result{margin-top:20px;font-size:20px;font-weight:bold}
+body{background:#111;color:#fff;font-family:Arial;padding:20px}
+.box{max-width:400px;margin:auto;background:#000;padding:25px;border-radius:12px}
+button{width:100%;padding:12px;margin-top:10px;border-radius:8px;border:none;background:#6ef3c5;font-weight:bold}
+#res{margin-top:15px;text-align:center}
 </style>
 </head>
 <body>
-<div class="tool-box">
-<h1>VPN / Proxy Detector</h1>
-<p>Check if your IP is using VPN or proxy.</p>
 
-<button onclick="check()">Check My IP</button>
-
-<div class="result" id="out"></div>
+<div class="box">
+<h2>VPN / Proxy Detector</h2>
+<button onclick="check()">Check</button>
+<div id="res"></div>
 </div>
 
 <script>
-function check(){
-fetch("https://ipapi.co/json/")
-.then(res=>res.json())
-.then(d=>{
-if(d.org && d.org.toLowerCase().includes("vpn")){
-out.innerText="VPN Detected ⚠️";
-out.style.color="#ff5252";
-}else{
-out.innerText="No VPN Detected ✅";
-out.style.color="#00ffd5";
-}
-});
+async function check(){
+  let r=await fetch("https://ipapi.co/json/");
+  let d=await r.json();
+  document.getElementById("res").innerHTML=
+  d.security && d.security.vpn ? "VPN Detected ❌" : "No VPN Detected ✅";
 }
 </script>
+
 </body>
 </html>
