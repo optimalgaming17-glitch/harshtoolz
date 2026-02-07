@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Random Name Generator – HarshToolz</title>
+<meta name="description" content="Generate random names instantly for free.">
+</head>
+<body>
+
+<h1>Random Name Generator</h1>
+
+<input id="output" readonly style="width:100%;padding:10px;">
+<br><br>
+<button onclick="gen()">Generate</button>
+<button onclick="down()">Download</button>
+
+<p>
+Generate random names for projects, testing, games and demo accounts.
+</p>
+
+<script>
+const names=["Aarav","Rohan","Neha","Kunal","Priya","Rahul","Ananya"];
+function gen(){
+output.value=names[Math.floor(Math.random()*names.length)];
+}
+function down(){
+const b=new Blob([output.value],{type:"text/plain"});
+const a=document.createElement("a");
+a.href=URL.createObjectURL(b);
+a.download="random-name.txt";
+a.click();
+}
+</script>
+
+</body>
+</html>
