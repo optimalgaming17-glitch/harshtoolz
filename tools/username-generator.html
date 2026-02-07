@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Username Generator – HarshToolz</title>
+<meta name="description" content="Generate unique usernames online for free.">
+</head>
+<body>
+
+<h1>Username Generator</h1>
+
+<input id="user" readonly style="width:100%;padding:10px;">
+<br><br>
+<button onclick="gen()">Generate</button>
+<button onclick="down()">Download</button>
+
+<p>
+Create unique usernames for social media, gaming and websites instantly.
+</p>
+
+<script>
+function gen(){
+const chars="abcdefghijklmnopqrstuvwxyz0123456789";
+let u="";
+for(let i=0;i<8;i++) u+=chars[Math.floor(Math.random()*chars.length)];
+user.value=u;
+}
+function down(){
+const b=new Blob([user.value],{type:"text/plain"});
+const a=document.createElement("a");
+a.href=URL.createObjectURL(b);
+a.download="username.txt";
+a.click();
+}
+</script>
+
+</body>
+</html>
