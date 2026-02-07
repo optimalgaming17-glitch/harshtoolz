@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Random Name Generator - HarshToolz</title>
-<meta name="description" content="Generate random names instantly online. Simple, fast and free name generator tool.">
+<title>Username Generator - HarshToolz</title>
+<meta name="description" content="Free username generator online. Create unique usernames instantly.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -22,14 +22,8 @@ body{
     box-shadow:0 0 25px rgba(0,255,200,0.15);
     text-align:center;
 }
-h1{
-    font-size:26px;
-    margin-bottom:10px;
-}
-p{
-    color:#ccc;
-    font-size:14px;
-}
+h1{font-size:26px;}
+p{color:#ccc;font-size:14px;}
 button{
     width:100%;
     padding:14px;
@@ -61,39 +55,34 @@ button{
 </head>
 
 <body>
-
 <div class="tool-box">
-<h1>Random Name Generator</h1>
-<p>Generate random names instantly for fun, projects or testing.</p>
+<h1>Username Generator</h1>
+<p>Generate unique usernames instantly for social media & gaming.</p>
 
-<button class="generate" onclick="generateName()">Generate Name</button>
-
+<button class="generate" onclick="generateUsername()">Generate Username</button>
 <div class="output" id="result"></div>
 
-<button class="download" id="downloadBtn" disabled onclick="downloadText()">Download Result</button>
+<button class="download" id="downloadBtn" disabled onclick="downloadText()">Download Username</button>
 </div>
 
 <script>
-let finalName = "";
+let finalText = "";
 
-function generateName(){
-    const names = ["Aarav","Rahul","Neha","Ankit","Priya","Karan","Simran"];
-    finalName = names[Math.floor(Math.random()*names.length)];
-    document.getElementById("result").innerText = finalName;
-
-    const btn = document.getElementById("downloadBtn");
-    btn.disabled = false;
-    btn.classList.add("active");
+function generateUsername(){
+    const users = ["cool_harsh","dark_dev","techboy99","harsh_x","user_pro"];
+    finalText = users[Math.floor(Math.random()*users.length)];
+    document.getElementById("result").innerText = finalText;
+    document.getElementById("downloadBtn").disabled=false;
+    document.getElementById("downloadBtn").classList.add("active");
 }
 
 function downloadText(){
-    const blob = new Blob([finalName], {type: "text/plain"});
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "random-name.txt";
-    link.click();
+    const blob = new Blob([finalText], {type:"text/plain"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "username.txt";
+    a.click();
 }
 </script>
-
 </body>
 </html>
