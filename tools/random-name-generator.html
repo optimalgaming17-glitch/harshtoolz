@@ -1,33 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Random Name Generator – HarshToolz</title>
-<meta name="description" content="Generate random names instantly for free.">
+<meta charset="UTF-8">
+<title>Random Name Generator - HarshToolz</title>
+<meta name="description" content="Generate random names instantly online. Simple, fast and free name generator tool.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#0f0f0f;
+    color:#fff;
+}
+.tool-box{
+    max-width:420px;
+    margin:40px auto;
+    background:#111;
+    padding:30px;
+    border-radius:14px;
+    box-shadow:0 0 25px rgba(0,255,200,0.15);
+    text-align:center;
+}
+h1{
+    font-size:26px;
+    margin-bottom:10px;
+}
+p{
+    color:#ccc;
+    font-size:14px;
+}
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:15px;
+}
+.generate{
+    background:#00ffd5;
+    color:#000;
+    font-weight:bold;
+}
+.download{
+    background:#444;
+    color:#aaa;
+}
+.download.active{
+    background:#00c2ff;
+    color:#000;
+}
+.output{
+    margin-top:15px;
+    font-size:18px;
+    font-weight:bold;
+}
+</style>
 </head>
+
 <body>
 
+<div class="tool-box">
 <h1>Random Name Generator</h1>
+<p>Generate random names instantly for fun, projects or testing.</p>
 
-<input id="output" readonly style="width:100%;padding:10px;">
-<br><br>
-<button onclick="gen()">Generate</button>
-<button onclick="down()">Download</button>
+<button class="generate" onclick="generateName()">Generate Name</button>
 
-<p>
-Generate random names for projects, testing, games and demo accounts.
-</p>
+<div class="output" id="result"></div>
+
+<button class="download" id="downloadBtn" disabled onclick="downloadText()">Download Result</button>
+</div>
 
 <script>
-const names=["Aarav","Rohan","Neha","Kunal","Priya","Rahul","Ananya"];
-function gen(){
-output.value=names[Math.floor(Math.random()*names.length)];
+let finalName = "";
+
+function generateName(){
+    const names = ["Aarav","Rahul","Neha","Ankit","Priya","Karan","Simran"];
+    finalName = names[Math.floor(Math.random()*names.length)];
+    document.getElementById("result").innerText = finalName;
+
+    const btn = document.getElementById("downloadBtn");
+    btn.disabled = false;
+    btn.classList.add("active");
 }
-function down(){
-const b=new Blob([output.value],{type:"text/plain"});
-const a=document.createElement("a");
-a.href=URL.createObjectURL(b);
-a.download="random-name.txt";
-a.click();
+
+function downloadText(){
+    const blob = new Blob([finalName], {type: "text/plain"});
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "random-name.txt";
+    link.click();
 }
 </script>
 
