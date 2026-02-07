@@ -1,36 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Online Calculator – HarshToolz</title>
-<meta name="description" content="Free online calculator for quick calculations.">
+<meta charset="UTF-8">
+<title>Online Calculator - HarshToolz</title>
+<meta name="description" content="Simple online calculator for quick calculations.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{margin:0;font-family:Arial;background:#0f0f0f;color:#fff;}
+.tool-box{
+    max-width:420px;
+    margin:40px auto;
+    background:#111;
+    padding:30px;
+    border-radius:14px;
+    box-shadow:0 0 25px rgba(0,255,200,0.15);
+    text-align:center;
+}
+h1{font-size:26px;}
+p{color:#ccc;font-size:14px;}
+input{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border-radius:8px;
+    border:none;
+}
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:15px;
+}
+.generate{background:#00ffd5;color:#000;font-weight:bold;}
+.output{margin-top:15px;font-size:18px;font-weight:bold;}
+</style>
 </head>
+
 <body>
-
+<div class="tool-box">
 <h1>Online Calculator</h1>
+<p>Perform quick calculations instantly.</p>
 
-<input id="calc" placeholder="Example: 10+20" style="width:100%;padding:10px;">
-<br><br>
-<button onclick="run()">Calculate</button>
-<button onclick="down()">Download Result</button>
+<input type="number" id="num1" placeholder="Enter first number">
+<input type="number" id="num2" placeholder="Enter second number">
 
-<p id="res"></p>
-
-<p>
-Perform quick math calculations online without installing anything.
-</p>
+<button class="generate" onclick="calculate()">Calculate</button>
+<div class="output" id="result"></div>
+</div>
 
 <script>
-function run(){
-res.innerText="Result: "+eval(calc.value);
-}
-function down(){
-const b=new Blob([res.innerText],{type:"text/plain"});
-const a=document.createElement("a");
-a.href=URL.createObjectURL(b);
-a.download="calculation.txt";
-a.click();
+function calculate(){
+    let a=Number(num1.value);
+    let b=Number(num2.value);
+    document.getElementById("result").innerText="Result: "+(a+b);
 }
 </script>
-
 </body>
 </html>
